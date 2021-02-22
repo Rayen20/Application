@@ -16,6 +16,8 @@
             <td>{{ product.id }}</td>
             <td>{{ product.firstname }}</td>
             <td>{{ product.date |date('d-m-Y H:i:s') }}</td>
+            <td><a href="{{ path('put', {'id': product.id}) }}">Modifier</a></td>
+
         </tbody>
     </table>
 {% endfor %}

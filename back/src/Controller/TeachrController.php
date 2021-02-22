@@ -52,4 +52,29 @@ public function teachers()
         "teachers" => $teachers,
     ]);
 }
+
+
+
+/**
+ * @Route("/put/{id}", name="put")
+ */
+public function put(Request $request, int $id): Response
+{
+    $entityManager = $this->getDoctrine()->getManager();
+
+    $teachr = $entityManager->getRepository(Teachr::class)->find($id);
+    $form = $this->createForm(TeachrFormType::class, $teachr);
+    $form->handleRequest($request);
+
+    if($form->isSubmitted() && $form->isValid())
+    {
+        $entityManager->flush();
+    }
+
+    return $this->render("teachr/teachr-form.html.twig", [
+        "form_title" => "Modifier un objet teachr",
+        "form_teachr" => $form->createView(),
+    ]);
+}
+
 }
