@@ -4,11 +4,27 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import { sliderWidth, itemWidth } from './SliderEntry.style';
 import SliderEntry from './SliderEntry';
 import styles, { colors } from './index.style';
+import NavigationBar from 'react-native-navbar';
 import { ENTRIES1, ENTRIES2 } from './static/entries';
 import { scrollInterpolators, animatedStyles } from './utils/animations';
 
 const IS_ANDROID = Platform.OS === 'android';
 const SLIDER_1_FIRST_ITEM = 1;
+const styl = {
+    container: {
+      flex: 1,
+    },
+  };
+  
+  const rightButtonConfig = {
+    title: 'Next',
+    handler: () => alert('hello!'),
+  };
+  
+  const titleConfig = {
+    title: 'Hello, world',
+  };
+  
 
 export default class Index extends Component {
 
@@ -87,7 +103,14 @@ export default class Index extends Component {
 
     momentumExample (number, title) {
         return (
+        
             <View style={styles.exampleContainer}>
+                    <View style={styl.container}>
+      <NavigationBar
+        title={titleConfig}
+        rightButton={rightButtonConfig}
+      />
+    </View>
                 <Text style={styles.title}>{`Example ${number}`}</Text>
                 <Text style={styles.subtitle}>{title}</Text>
                 <Carousel
@@ -157,7 +180,6 @@ export default class Index extends Component {
    
 
     render () {
-        const example1 = this.mainExample(1, 'Default layout | Loop | Autoplay | Parallax | Scale | Opacity | Pagination with tappable dots');
         const example2 = this.momentumExample(2, 'Momentum | Left-aligned | Active animation');
         const example3 = this.layoutExample(3, '"Stack of cards" layout | Loop', 'stack');
         const example4 = this.layoutExample(4, '"Tinder-like" layout | Loop', 'tinder');
@@ -180,14 +202,9 @@ export default class Index extends Component {
                       scrollEventThrottle={200}
                       directionalLockEnabled={true}
                     >
-                        { example1 }
+                      
                         { example2 }
-                        { example3 }
-                        { example4 }
-                        { example5 }
-                        { example6 }
-                        { example7 }
-                        { example8 }
+                        
                     </ScrollView>
                 </View>
             </SafeAreaView>
