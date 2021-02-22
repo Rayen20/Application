@@ -7,6 +7,7 @@ import styles, { colors } from './index.style';
 import NavigationBar from 'react-native-navbar';
 import { ENTRIES1, ENTRIES2 } from './static/entries';
 import { scrollInterpolators, animatedStyles } from './utils/animations';
+import axios from 'axios'
 
 const IS_ANDROID = Platform.OS === 'android';
 const SLIDER_1_FIRST_ITEM = 1;
@@ -31,10 +32,23 @@ export default class Index extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            slider1ActiveSlide: SLIDER_1_FIRST_ITEM
+            slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
+            publicResources: null
         };
+       
+      this.fetchPublicResources = this.fetchPublicResources.bind(this);
     }
+    componentWillMount() {
+      this.fetchPublicResources();
+  }
 
+  fetchPublicResources() {
+      
+          axios.get('http://localhost:8001/teachers').then(res => {
+                  this.setState({publicResources: res.data});
+              })
+      
+  }
     _renderItem ({item, index}) {
         return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
     }
@@ -67,7 +81,7 @@ export default class Index extends Component {
                 <Text style={styles.subtitle}>{title}</Text>
                 <Carousel
                   ref={c => this._slider1Ref = c}
-                  data={ENTRIES1}
+                  data={publicResources}
                   renderItem={this._renderItemWithParallax}
                   sliderWidth={sliderWidth}
                   itemWidth={itemWidth}
@@ -114,7 +128,7 @@ export default class Index extends Component {
                 <Text style={styles.title}>{`Example ${number}`}</Text>
                 <Text style={styles.subtitle}>{title}</Text>
                 <Carousel
-                  data={ENTRIES2}
+                  data={this.publicResources}
                   renderItem={this._renderItem}
                   sliderWidth={sliderWidth}
                   itemWidth={itemWidth}
