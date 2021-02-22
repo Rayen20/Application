@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TeachrController!{% endblock %}
+
+{% block body %}
+<h1>Lise des teachers</h1>
+<p><a href="{{ path('add') }}">Ajouter un teacher</a></p>
+{% for product in teachers %}
+    <table>
+        <thead>
+            <th>ID</th>
+            <th>firstname</th>
+            <th>date</th>
+        </thead>
+        <tbody>
+            <td>{{ product.id }}</td>
+            <td>{{ product.firstname }}</td>
+            <td>{{ product.date |date('d-m-Y H:i:s') }}</td>
+        </tbody>
+    </table>
+{% endfor %}
+{% endblock %}

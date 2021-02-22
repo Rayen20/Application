@@ -41,4 +41,15 @@ public function add(Request $request): Response
         "form_teachr" => $form->createView(),
     ]);
 }
+/**
+ * @Route("/teachers", name="teachers")
+ */
+public function teachers()
+{
+    $teachers = $this->getDoctrine()->getRepository(Teachr::class)->findAll();
+
+    return $this->render('teachr/teachers.html.twig', [
+        "teachers" => $teachers,
+    ]);
+}
 }
