@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Platform, View, ScrollView, Text, StatusBar, SafeAreaView } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
+
 import { sliderWidth, itemWidth } from './SliderEntry.style';
 import SliderEntry from './SliderEntry';
 import styles, { colors } from './index.style';
-import NavigationBar from 'react-native-navbar';
 import { ENTRIES1, ENTRIES2 } from './static/entries';
 import { scrollInterpolators, animatedStyles } from './utils/animations';
 import axios from 'axios'
@@ -13,7 +13,7 @@ const IS_ANDROID = Platform.OS === 'android';
 const SLIDER_1_FIRST_ITEM = 1;
 const styl = {
     container: {
-      flex: 1,
+      flex: 2,
     },
   };
   
@@ -38,7 +38,7 @@ export default class Index extends Component {
             count : 0
         };
        
-      this.fetchPublicResources = this.fetchPublicResources.bind(this);
+    
     }
     doSomethingSuperWrong() {
       // this.state.count == 0
@@ -47,16 +47,18 @@ export default class Index extends Component {
       this.setState({ count: this.state.count + 1 })
       console.log(this.state.count)
     }
-    componentWillMount() {
+
+    
+    componentDidMount() {
       console.log(this.state.nameList)
       
      
 
     
       console.log(this.state.nameList)
-      this.fetchPublicResources();
-      console.log(this.fetchPublicResources())
-      fetch("http://localhost:8001/api/public")
+    
+     
+      fetch("http://127.0.0.1:8001/api/public")
       .then(res => res.json())
       .then((result) => {
         this.state.nameList = result;
@@ -83,18 +85,10 @@ export default class Index extends Component {
     console.log(error);
   });
  
-      console.log(this.get)
+    
   }
 
-  fetchPublicResources() {
-      
-          axios.get('http://localhost:8001/teachers').then(res => {
-                  this.setState({publicResources: res.data});
-                 
-              })
-              
-      
-  }
+ 
     _renderItem ({item, index}) {
         return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
     }
@@ -166,10 +160,7 @@ export default class Index extends Component {
         
             <View style={styles.exampleContainer}>
                     <View style={styl.container}>
-      <NavigationBar
-        title={titleConfig}
-        rightButton={rightButtonConfig}
-      />
+     
     </View>
                 <Text style={styles.title}>{`Example ${number}`}</Text>
                 <Text style={styles.subtitle}>{title}</Text>

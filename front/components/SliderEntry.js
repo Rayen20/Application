@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+
+
 import { ParallaxImage } from 'react-native-snap-carousel';
 import styles from './SliderEntry.style';
+import {Button} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 
 
 
@@ -61,7 +66,12 @@ export default class SliderEntry extends Component {
                 <View style={styles.shadow} />
                 <View style={[styles.imageContainer, even ? styles.imageContainerEven : {}]}>
                 <View  style={[styles.textContainer, even ? styles.textContainerEven : {}]}> 
-              <Text></Text> 
+              <View>
+            <Icon name="user" size={30} color="#900" />  
+            <Text> Firstname :  { firstname }</Text>
+            
+            <Text></Text>
+                  </View> 
                </View>
                     
                 </View>
@@ -71,8 +81,10 @@ export default class SliderEntry extends Component {
                       style={[styles.subtitle, even ? styles.subtitleEven : {}]}
                       numberOfLines={2}
                     >
-                        { title }
+                        { firstname }
+                        
                     </Text>
+                  
                 </View>
             </TouchableOpacity>
         );

@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\msi\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-navbar
+  C:\Program Files\nodejs\node.exe C:\Users\msi\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-cardview
 
 PATH: 
   C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\nodejs\;C:\wamp64\bin\php\php7.3.21;C:\ProgramData\ComposerSetup\bin;C:\Program Files\Git\cmd;C:\Users\msi\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\msi\AppData\Local\Programs\Python\Python39\;C:\Users\msi\AppData\Local\Microsoft\WindowsApps;C:\Users\msi\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\msi\AppData\Roaming\npm;C:\Program Files\nodejs;C:\Users\msi\AppData\Roaming\Composer\vendor\bin;C:\Program Files\JetBrains\PhpStorm 2020.2.3\bin;;C:\Users\msi\AppData\Local\GitHubDesktop\bin
@@ -28,6 +28,7 @@ npm manifest:
     },
     "dependencies": {
       "@types/react-native-snap-carousel": "^3.8.2",
+      "axios": "^0.21.1",
       "bootstrap": "^4.6.0",
       "expo": "~40.0.0",
       "expo-status-bar": "~1.0.3",
@@ -36,8 +37,12 @@ npm manifest:
       "react-dom": "16.13.1",
       "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
       "react-native-bootstrap-styles": "^4.5.0-r",
+      "react-native-button": "^3.0.1",
+      "react-native-cardview": "^2.0.5",
       "react-native-elements": "^3.2.0",
+      "react-native-navbar": "^2.1.0",
       "react-native-snap-carousel": "^3.9.1",
+      "react-native-vector-icons": "^8.0.0",
       "react-native-web": "^0.15.0"
     },
     "devDependencies": {
