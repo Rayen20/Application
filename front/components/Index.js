@@ -33,20 +33,41 @@ export default class Index extends Component {
         super(props);
         this.state = {
             slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
-            publicResources: null
+            publicResources: null,
+            nameList: {}
         };
        
       this.fetchPublicResources = this.fetchPublicResources.bind(this);
     }
     componentWillMount() {
       this.fetchPublicResources();
+      console.log(this.fetchPublicResources())
+      axios.get('http://localhost:8001/api/public')
+      .then(res => {
+        const nameList = res.data;
+        this.setState({ nameList });
+        console.log(this.state.nameList)
+      })
+      console.log(this.state.nameList)
+     
+      axios.get('http://localhost:8001/api/public')
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+     
+      console.log(this.get)
   }
 
   fetchPublicResources() {
       
           axios.get('http://localhost:8001/teachers').then(res => {
                   this.setState({publicResources: res.data});
+                 
               })
+              
       
   }
     _renderItem ({item, index}) {
@@ -74,14 +95,15 @@ export default class Index extends Component {
 
     mainExample (number, title) {
         const { slider1ActiveSlide } = this.state;
-
+        const { nameList } = this.state;
+        console.log(this.state.nameList)
         return (
             <View style={styles.exampleContainer}>
                 <Text style={styles.title}>{`Example ${number}`}</Text>
                 <Text style={styles.subtitle}>{title}</Text>
                 <Carousel
                   ref={c => this._slider1Ref = c}
-                  data={publicResources}
+                  data={nameList}
                   renderItem={this._renderItemWithParallax}
                   sliderWidth={sliderWidth}
                   itemWidth={itemWidth}
@@ -128,7 +150,7 @@ export default class Index extends Component {
                 <Text style={styles.title}>{`Example ${number}`}</Text>
                 <Text style={styles.subtitle}>{title}</Text>
                 <Carousel
-                  data={this.publicResources}
+                  data={this.response}
                   renderItem={this._renderItem}
                   sliderWidth={sliderWidth}
                   itemWidth={itemWidth}

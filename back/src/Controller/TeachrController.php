@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\Teachr;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\TeachrFormType;
@@ -75,6 +76,48 @@ public function put(Request $request, int $id): Response
         "form_title" => "Modifier un objet teachr",
         "form_teachr" => $form->createView(),
     ]);
+
+
 }
+
+private function serializeProgrammer(Teachr $teachr)
+{
+    return array(
+        'firstname' => $teachr->getFirstname(),
+        'date' => $teachr->getDate(),
+        
+    );
+}
+
+ /**
+     * @Route("/api/public", name="public")
+     * @return JsonResponse
+     */
+    public function publicAction()
+    {
+        //$teachers = $this->getDoctrine()->getRepository(Teachr::class)->findAll();
+       // $response = new Response();
+
+        /*$response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        $response->setContent(json_encode($teachers));*/
+        
+        $teachers = $this->getDoctrine()
+            ->getRepository(Teachr::class)
+            ->findAll();
+        $data = array('teachers' => array());
+        foreach ($teachers as $teachr) {
+            $data['teachers'][] = $this->serializeProgrammer($teachr);
+        }
+        $response = new Response(json_encode($data), 200);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+       // return $response;
+        
+
+        //return new JsonResponse($teachers);
+    }
+
 
 }
