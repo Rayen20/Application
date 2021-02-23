@@ -34,30 +34,55 @@ export default class Index extends Component {
         this.state = {
             slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
             publicResources: null,
-            nameList: {}
+            nameList: [],
+            count : 0
         };
        
       this.fetchPublicResources = this.fetchPublicResources.bind(this);
     }
+    doSomethingSuperWrong() {
+      // this.state.count == 0
+      this.setState({ count: this.state.count + 1 })
+      this.setState({ count: this.state.count + 1 })
+      this.setState({ count: this.state.count + 1 })
+      console.log(this.state.count)
+    }
     componentWillMount() {
+      console.log(this.state.nameList)
+      
+     
+
+    
+      console.log(this.state.nameList)
       this.fetchPublicResources();
       console.log(this.fetchPublicResources())
-      axios.get('http://localhost:8001/api/public')
-      .then(res => {
-        const nameList = res.data;
-        this.setState({ nameList });
+      fetch("http://localhost:8001/api/public")
+      .then(res => res.json())
+      .then((result) => {
+        this.state.nameList = result;
+        console.log(result)
         console.log(this.state.nameList)
-      })
+        this.setState({
+        
+          nameList: result
+        });
+        
+      },)
       console.log(this.state.nameList)
      
       axios.get('http://localhost:8001/api/public')
   .then(function (response) {
-    console.log(response);
+   
+    console.log(response.data);
+    this.state.nameList.setState({
+        
+      nameList: response.data
+    });
   })
   .catch(function (error) {
     console.log(error);
   });
-     
+ 
       console.log(this.get)
   }
 
@@ -93,17 +118,16 @@ export default class Index extends Component {
         return <SliderEntry data={item} even={true} />;
     }
 
-    mainExample (number, title) {
+    mainExample (number, firstname) {
         const { slider1ActiveSlide } = this.state;
-        const { nameList } = this.state;
-        console.log(this.state.nameList)
+       
         return (
             <View style={styles.exampleContainer}>
-                <Text style={styles.title}>{`Example ${number}`}</Text>
-                <Text style={styles.subtitle}>{title}</Text>
+                <Text style={  this.state.nameList.firstname}>{`Example ${number}`}</Text>
+                <Text style={this.state.nameList.firstname}>{firstname}</Text>
                 <Carousel
                   ref={c => this._slider1Ref = c}
-                  data={nameList}
+                  data={  this.state.nameList}
                   renderItem={this._renderItemWithParallax}
                   sliderWidth={sliderWidth}
                   itemWidth={itemWidth}
@@ -150,7 +174,7 @@ export default class Index extends Component {
                 <Text style={styles.title}>{`Example ${number}`}</Text>
                 <Text style={styles.subtitle}>{title}</Text>
                 <Carousel
-                  data={this.response}
+                  data={ this.state.nameList}
                   renderItem={this._renderItem}
                   sliderWidth={sliderWidth}
                   itemWidth={itemWidth}
@@ -216,6 +240,7 @@ export default class Index extends Component {
    
 
     render () {
+        const example1 = this.mainExample(1, 'Default layout | Loop | Autoplay | Parallax | Scale | Opacity | Pagination with tappable dots');
         const example2 = this.momentumExample(2, 'Momentum | Left-aligned | Active animation');
         const example3 = this.layoutExample(3, '"Stack of cards" layout | Loop', 'stack');
         const example4 = this.layoutExample(4, '"Tinder-like" layout | Loop', 'tinder');
@@ -238,7 +263,7 @@ export default class Index extends Component {
                       scrollEventThrottle={200}
                       directionalLockEnabled={true}
                     >
-                      
+                        { example1 }
                         { example2 }
                         
                     </ScrollView>

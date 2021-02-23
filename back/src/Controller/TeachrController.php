@@ -79,7 +79,39 @@ public function put(Request $request, int $id): Response
 
 
 }
+/**
+     * @Route("/api/users", name="users")
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getUsers()
+    {
+        $users = [
+            [
+                'title' => 'Beautiful and dramatic Antelope Canyon',
+                'subtitle'=> 'Lorem ipsum dolor sit amet et nuncat mergitur',
+                'illustration'=>'https://i.imgur.com/UYiroysl.jpg'
+            ],
+            [
+                'title' => 'Beautiful and dramatic Antelope Canyon',
+                'subtitle'=> 'Lorem ipsum dolor sit amet et nuncat mergitur',
+                'illustration'=>'https://i.imgur.com/UYiroysl.jpg'
+              ],
+            [
+                'title' => 'Beautiful and dramatic Antelope Canyon',
+                'subtitle'=> 'Lorem ipsum dolor sit amet et nuncat mergitur',
+                'illustration'=>'https://i.imgur.com/UYiroysl.jpg'
+             ]
+        ];
+    
+        $response = new Response();
 
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        $response->setContent(json_encode($users));
+        
+        return $response;
+    }
 private function serializeProgrammer(Teachr $teachr)
 {
     return array(
@@ -91,7 +123,7 @@ private function serializeProgrammer(Teachr $teachr)
 
  /**
      * @Route("/api/public", name="public")
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function publicAction()
     {
@@ -106,12 +138,18 @@ private function serializeProgrammer(Teachr $teachr)
         $teachers = $this->getDoctrine()
             ->getRepository(Teachr::class)
             ->findAll();
-        $data = array('teachers' => array());
+        $data = array();
         foreach ($teachers as $teachr) {
-            $data['teachers'][] = $this->serializeProgrammer($teachr);
+            $data[] = $this->serializeProgrammer($teachr);
         }
-        $response = new Response(json_encode($data), 200);
+        
+        $response = new Response();
+
         $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        $response->setContent(json_encode($data));
+        
         return $response;
        // return $response;
         
