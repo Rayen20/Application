@@ -8,7 +8,9 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@busfor/react-native-collapsible-navbar-scrollview": "^1.1.1",
     "@types/react-native-snap-carousel": "^3.8.2",
+    "accordion-collapse-react-native": "^1.0.0",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "expo": "~40.0.0",
@@ -28,7 +30,8 @@
     "react-native-simple-animations": "^0.2.3",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-vector-icons": "^8.0.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "whatwg-fetch": "^3.6.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

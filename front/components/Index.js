@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { Platform, View, ScrollView, Text, StatusBar, SafeAreaView } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-
+import {fetch as fetchPolyfill} from 'whatwg-fetch'
 import { sliderWidth, itemWidth } from './SliderEntry.style';
 import SliderEntry from './SliderEntry';
 import styles, { colors } from './index.style';
 import { ENTRIES1, ENTRIES2 } from './static/entries';
 import { scrollInterpolators, animatedStyles } from './utils/animations';
-import axios from 'axios'
+import axios from 'axios';
+import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
+import NavigationBar from 'react-native-navbar';
+
+import { CollapsibleNavBarScrollView, CollapsibleNavBarState } from '@busfor/react-native-collapsible-navbar-scrollview'
 
 const IS_ANDROID = Platform.OS === 'android';
 const SLIDER_1_FIRST_ITEM = 1;
@@ -23,7 +27,7 @@ const styl = {
   };
   
   const titleConfig = {
-    title: 'Hello, world',
+    title: 'Back',
   };
   
 
@@ -49,30 +53,44 @@ export default class Index extends Component {
     }
 
     
+     parseJSON(response) {
+      return response.json()
+    }
+    
     componentDidMount() {
-      console.log(this.state.nameList)
-      
-     
+         
 
+      fetch('http://localhost:8001/api/public')
+  .then(response => response.json())
+  .then(data => {console.log(data);
+    this.setState({
+        
+      nameList: data
+    });
+    console.log(this.state.nameList)
+  }
+  
+  );
+/*
+      axios.get("http://localhost:8001/api/public")
     
-      console.log(this.state.nameList)
-    
-     
-      fetch("http://127.0.0.1:8001/api/public")
-      .then(res => res.json())
       .then((result) => {
-        this.state.nameList = result;
-        console.log(result)
+        this.state.nameList = result.data;
+        console.log(result.data)
         console.log(this.state.nameList)
         this.setState({
         
-          nameList: result
+          nameList: result.data
         });
         
-      },)
-      console.log(this.state.nameList)
+      },).catch(function(error) {
+        console.log('There has been a problem with your fetch operation: ' + error.message);
+         // ADD THIS THROW error
+          throw error;
+        });
+     */
      
-      axios.get('http://localhost:8001/api/public')
+    /*  axios.get('http://localhost:8001/api/public')
   .then(function (response) {
    
     console.log(response.data);
@@ -84,7 +102,7 @@ export default class Index extends Component {
   .catch(function (error) {
     console.log(error);
   });
- 
+ */
     
   }
 
@@ -117,6 +135,10 @@ export default class Index extends Component {
        
         return (
             <View style={styles.exampleContainer}>
+           <NavigationBar
+        title={titleConfig}
+        rightButton={rightButtonConfig}
+      />
                 <Text style={  this.state.nameList.firstname}>{`Example ${number}`}</Text>
                 <Text style={this.state.nameList.firstname}>{firstname}</Text>
                 <Carousel

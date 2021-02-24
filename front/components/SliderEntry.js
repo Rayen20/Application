@@ -81,7 +81,10 @@ export default class SliderEntry extends Component {
                       style={[styles.subtitle, even ? styles.subtitleEven : {}]}
                       numberOfLines={2}
                     >
-                        { firstname }
+                    <Button
+        title="Press me"
+        onPress={() => Alert.alert('Simple Button pressed')}
+      />
                         
                     </Text>
                   
