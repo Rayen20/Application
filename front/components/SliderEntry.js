@@ -1,18 +1,40 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity ,StyleSheet,Alert } from 'react-native';
 import PropTypes from 'prop-types';
-
-
 import { ParallaxImage } from 'react-native-snap-carousel';
 import styles from './SliderEntry.style';
 import {Button} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Stack } from "react-native-spacing-system";
 
 
 
 
 
 
+const Separator = () => (
+  <View style={sty.separator} />
+);
+const sty = StyleSheet.create({
+ /* container: {
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 16,
+  },
+  title: {
+    textAlign: 'center',
+    marginVertical: 8,
+  },
+  fixToText: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },*/
+  separator: {
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+});
 
 export default class SliderEntry extends Component {
 
@@ -52,7 +74,7 @@ export default class SliderEntry extends Component {
               style={[styles.firstname, even ? styles.titleEven : {}]}
               numberOfLines={2}
             >
-                { firstname.toUpperCase() }
+             
             </Text>
             
         ) : false;
@@ -68,8 +90,39 @@ export default class SliderEntry extends Component {
                 <View  style={[styles.textContainer, even ? styles.textContainerEven : {}]}> 
               <View>
             <Icon name="user" size={30} color="#900" />  
-            <Text> Firstname :  { firstname }</Text>
-            
+            <Stack size={16} />
+            <Text> <b>Firstname : </b> { firstname }</Text>
+            <Text> <b>Last name : </b> { firstname }</Text>
+
+            <Text> <b>formation :  </b> I am in the 3rd year of the computer engineering cycle  </Text>
+
+             <Text> Description :  HI </Text>
+            <Stack size={16} />
+             <View style={{
+      flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    }}>   
+    
+               <View  >     
+                        <Button 
+        title="take lessons with this teach'r "
+        onPress={() => Alert.alert('take lessons with this teachr')}
+        
+      />
+      </View>
+ <Stack size={16} />
+      <View style={{
+      flex: 0.1,
+        
+    }}>
+       <Button
+        title="remove this teachr from my favorites "
+        onPress={() => Alert.alert('remove this teachr from my favorites ')}
+  
+      />
+      </View>
+      </View>
             <Text></Text>
                   </View> 
                </View>
@@ -81,16 +134,16 @@ export default class SliderEntry extends Component {
                       style={[styles.subtitle, even ? styles.subtitleEven : {}]}
                       numberOfLines={2}
                     >
-                    <Button
-        title="Press me"
-        onPress={() => Alert.alert('Simple Button pressed')}
-      />
-                        
+              
                     </Text>
                   
                 </View>
             </TouchableOpacity>
         );
     }
+
+
+    
 }
+
 

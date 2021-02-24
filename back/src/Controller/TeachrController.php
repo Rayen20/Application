@@ -25,7 +25,9 @@ class TeachrController extends AbstractController
 
 // API (GET,PUT,POST)
 
-// api : POST 
+// api : POST &&  counter increment that is in the statistic table 
+
+
 /**
      * @Route("/api/post", name="post",methods={"POST"})
      * 

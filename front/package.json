@@ -9,6 +9,7 @@
     "test": "node node_modules/jest/bin/jest.js"
   },
   "dependencies": {
+    "@babel/runtime": "7.0.0-beta.55",
     "@busfor/react-native-collapsible-navbar-scrollview": "^1.1.1",
     "@types/react-native-snap-carousel": "^3.8.2",
     "accordion-collapse-react-native": "^1.0.0",
@@ -26,12 +27,15 @@
     "react-native-bootstrap-styles": "^4.5.0-r",
     "react-native-button": "^3.0.1",
     "react-native-cardview": "^2.0.5",
+    "react-native-collapsing-header": "^1.0.1",
     "react-native-elements": "^3.2.0",
     "react-native-navbar": "^2.1.0",
     "react-native-simple-animations": "^0.2.3",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-spacing-system": "^2.0.0-rc.0",
     "react-native-vector-icons": "^8.0.0",
     "react-native-web": "~0.13.12",
+    "react-native-web-swiper": "^2.2.1",
     "react-scripts": "^4.0.3",
     "whatwg-fetch": "^3.6.1"
   },
