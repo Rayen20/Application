@@ -20,7 +20,7 @@ Configurer le frontend
 
 
 
-*installez les dépendances et exécutez le serveur:
+* installez les dépendances et exécutez le serveur:
 
 npm install
 npm start
