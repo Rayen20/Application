@@ -61,17 +61,17 @@ export default class Index extends Component {
          
 
       fetch('http://localhost:8001/api/public')
-  .then(response => response.json())
-  .then(data => {console.log(data);
-    this.setState({
+      .then(response => response.json())
+      .then(data => {console.log(data);
+       this.setState({
         
       nameList: data
-    });
+      });
     console.log(this.state.nameList)
   }
   
   );
-/*
+
       axios.get("http://localhost:8001/api/public")
     
       .then((result) => {
@@ -88,7 +88,7 @@ export default class Index extends Component {
          // ADD THIS THROW error
           throw error;
         });
-     */
+     
      
     /*  axios.get('http://localhost:8001/api/public')
   .then(function (response) {
