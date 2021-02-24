@@ -59,7 +59,6 @@ public function postAction(Request $request){
        
         if ($stats) {
         
-           // $n += $n + 1 ;
         $stats->setCount($n +1);
 
         $entityManag->flush(); 
