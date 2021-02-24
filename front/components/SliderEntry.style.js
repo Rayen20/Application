@@ -1,3 +1,5 @@
+// imports
+
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { colors } from './index.style';
 
@@ -17,6 +19,8 @@ export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
 const entryBorderRadius = 8;
+
+// style of slides 
 
 export default StyleSheet.create({
     slideInnerContainer: {

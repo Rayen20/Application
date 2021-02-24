@@ -10,31 +10,17 @@ import { Stack } from "react-native-spacing-system";
 
 
 
-
-
-const Separator = () => (
-  <View style={sty.separator} />
-);
 const sty = StyleSheet.create({
- /* container: {
-    flex: 1,
-    justifyContent: 'center',
-    marginHorizontal: 16,
-  },
-  title: {
-    textAlign: 'center',
-    marginVertical: 8,
-  },
-  fixToText: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },*/
+ 
   separator: {
     marginVertical: 8,
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });
+
+
+// the content of a slide 
 
 export default class SliderEntry extends Component {
 

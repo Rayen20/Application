@@ -1,3 +1,5 @@
+// imports
+
 import React , { Component }  from "react";
 import { Text, TouchableOpacity, View ,Animated , StyleSheet} from "react-native";
 //import Swiper from "react-native-web-swiper";
@@ -31,6 +33,10 @@ const s = StyleSheet.create({
   }, 
  
 })
+
+
+// it is the main component of the application, and which calls on the other components 
+
 export default class Index extends Component {
 
     constructor (props) {
@@ -48,12 +54,13 @@ export default class Index extends Component {
     
     }
     
+    //  componentDidMount () is used   to call the setState () method to change the state of the application 
     
     componentDidMount() {
      
-    
+          // fetching data from backend   at the port 8000 
      
-      fetch("http://localhost:8001/api/get")
+      fetch("http://localhost:8000/api/get")
       .then(res => res.json())
       .then((result) => {
         
@@ -70,6 +77,9 @@ export default class Index extends Component {
       
  
   }
+
+  //  we implement the carousel componement 
+ 
 
  
     _renderItem ({item, index}) {
