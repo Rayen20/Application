@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+
+
+//  index styles 
 export const colors = {
     black: 'white',
     gray: '#888888',
