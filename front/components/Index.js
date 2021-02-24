@@ -13,7 +13,7 @@ import styles, { colors } from './index.style';
 
 
 
-const IS_ANDROID = Platform.OS === 'android';
+
 const { width: SCREEN_WIDTH } = Dimensions.get('screen')
 const SLIDER_1_FIRST_ITEM = 1;
 const styl = {
