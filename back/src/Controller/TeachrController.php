@@ -48,7 +48,7 @@ public function add(Request $request): Response
     ]);
 }
 
-
+// methode post api symfony
 /**
      * @Route("/api/post", name="post",methods={"POST"})
      * 
@@ -103,7 +103,46 @@ public function teachers()
 }
 
 
+// put symfony api rest
 
+/**
+ * @Route("/api/update/{id}", name="update", methods={"PUT"})
+ */
+public function update(?Teachr $article,Request $request)
+{
+    
+   // On vérifie si la requête est une requête Ajax
+  
+
+    // On décode les données envoyées
+    $donnees = json_decode($request->getContent());
+
+    // On initialise le code de réponse
+    $code = 200;
+
+    // Si l'article n'est pas trouvé
+    if(!$article){
+        // On instancie un nouvel article
+        $article = new Teachr();
+        // On change le code de réponse
+        $code = 201;
+    }
+
+    // On hydrate l'objet
+    $article->setFirstname($donnees->firstname);
+     $article->setDate(new \DateTime('now'));
+
+    // On sauvegarde en base
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->persist($article);
+    $entityManager->flush();
+
+    // On retourne la confirmation
+  
+return new Response('status', $code);
+}
+
+ 
 /**
  * @Route("/put/{id}", name="put")
  */
