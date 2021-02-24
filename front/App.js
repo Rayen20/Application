@@ -4,14 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import Index from './components/Index';
 import NavigationBar from 'react-native-navbar';
 
-const rightButtonConfig = {
-  title: 'Next',
-  handler: () => alert('hello!'),
-};
+//  we add the component index in  The app (root component) , 
 
-const titleConfig = {
-  title: 'Hello, world',
-};
 export default function App() {
   return (
     <View >

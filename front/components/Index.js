@@ -1,3 +1,5 @@
+// imports 
+
 import React, { Component } from 'react';
 import { Platform, View, ScrollView, Text, StatusBar, SafeAreaView } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -5,7 +7,6 @@ import {fetch as fetchPolyfill} from 'whatwg-fetch'
 import { sliderWidth, itemWidth } from './SliderEntry.style';
 import SliderEntry from './SliderEntry';
 import styles, { colors } from './index.style';
-import { ENTRIES1, ENTRIES2 } from './static/entries';
 import { scrollInterpolators, animatedStyles } from './utils/animations';
 import axios from 'axios';
 import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
@@ -30,7 +31,9 @@ const styl = {
     title: 'Back',
   };
   
+ 
 
+// it is the main component of the application, and which calls on the other components 
 export default class Index extends Component {
 
     constructor (props) {
@@ -56,11 +59,15 @@ export default class Index extends Component {
      parseJSON(response) {
       return response.json()
     }
+
+  //  componentDidMount () is used   to call the setState () method to change the state of the application 
     
     componentDidMount() {
          
 
-      fetch('http://localhost:8001/api/public')
+      // fetching data from backend   at the port 8000 
+
+      fetch('http://localhost:8001/api/get')
       .then(response => response.json())
       .then(data => {console.log(data);
        this.setState({
@@ -72,7 +79,7 @@ export default class Index extends Component {
   
   );
 
-      axios.get("http://localhost:8001/api/public")
+     /* axios.get("http://localhost:8001/api/get")
     
       .then((result) => {
         this.state.nameList = result.data;
@@ -87,7 +94,7 @@ export default class Index extends Component {
         console.log('There has been a problem with your fetch operation: ' + error.message);
          // ADD THIS THROW error
           throw error;
-        });
+        });*/
      
      
     /*  axios.get('http://localhost:8001/api/public')
@@ -106,6 +113,8 @@ export default class Index extends Component {
     
   }
 
+
+  //  we implement the carousel componement 
  
     _renderItem ({item, index}) {
         return <SliderEntry data={item} even={(index + 1) % 2 === 0} />;
@@ -128,53 +137,6 @@ export default class Index extends Component {
 
     _renderDarkItem ({item, index}) {
         return <SliderEntry data={item} even={true} />;
-    }
-
-    mainExample (number, firstname) {
-        const { slider1ActiveSlide } = this.state;
-       
-        return (
-            <View style={styles.exampleContainer}>
-           <NavigationBar
-        title={titleConfig}
-        rightButton={rightButtonConfig}
-      />
-                <Text style={  this.state.nameList.firstname}>{`Example ${number}`}</Text>
-                <Text style={this.state.nameList.firstname}>{firstname}</Text>
-                <Carousel
-                  ref={c => this._slider1Ref = c}
-                  data={  this.state.nameList}
-                  renderItem={this._renderItemWithParallax}
-                  sliderWidth={sliderWidth}
-                  itemWidth={itemWidth}
-                  hasParallaxImages={true}
-                  firstItem={SLIDER_1_FIRST_ITEM}
-                  inactiveSlideScale={0.94}
-                  inactiveSlideOpacity={0.7}
-                  // inactiveSlideShift={20}
-                  containerCustomStyle={styles.slider}
-                  contentContainerCustomStyle={styles.sliderContentContainer}
-                  loop={true}
-                  loopClonesPerSide={2}
-                  autoplay={true}
-                  autoplayDelay={500}
-                  autoplayInterval={3000}
-                  onSnapToItem={(index) => this.setState({ slider1ActiveSlide: index }) }
-                />
-                <Pagination
-                  dotsLength={ENTRIES1.length}
-                  activeDotIndex={slider1ActiveSlide}
-                  containerStyle={styles.paginationContainer}
-                  dotColor={'rgba(255, 255, 255, 0.92)'}
-                  dotStyle={styles.paginationDot}
-                  inactiveDotColor={colors.black}
-                  inactiveDotOpacity={0.4}
-                  inactiveDotScale={0.6}
-                  carouselRef={this._slider1Ref}
-                  tappableDots={!!this._slider1Ref}
-                />
-            </View>
-        );
     }
 
     momentumExample (number, title) {
@@ -207,60 +169,12 @@ export default class Index extends Component {
         );
     }
 
-    layoutExample (number, title, type) {
-        const isTinder = type === 'tinder';
-        return (
-            <View style={[styles.exampleContainer, isTinder ? styles.exampleContainerDark : styles.exampleContainerLight]}>
-                <Text style={[styles.title, isTinder ? {} : styles.titleDark]}>{`Example ${number}`}</Text>
-                <Text style={[styles.subtitle, isTinder ? {} : styles.titleDark]}>{title}</Text>
-                <Carousel
-                  data={isTinder ? ENTRIES2 : ENTRIES1}
-                  renderItem={isTinder ? this._renderLightItem : this._renderItem}
-                  sliderWidth={sliderWidth}
-                  itemWidth={itemWidth}
-                  containerCustomStyle={styles.slider}
-                  contentContainerCustomStyle={styles.sliderContentContainer}
-                  layout={type}
-                  loop={true}
-                />
-            </View>
-        );
-    }
 
-    customExample (number, title, refNumber, renderItemFunc) {
-        const isEven = refNumber % 2 === 0;
-
-        // Do not render examples on Android; because of the zIndex bug, they won't work as is
-        return !IS_ANDROID ? (
-            <View style={[styles.exampleContainer, isEven ? styles.exampleContainerDark : styles.exampleContainerLight]}>
-                <Text style={[styles.title, isEven ? {} : styles.titleDark]}>{`Example ${number}`}</Text>
-                <Text style={[styles.subtitle, isEven ? {} : styles.titleDark]}>{title}</Text>
-                <Carousel
-                  data={isEven ? ENTRIES2 : ENTRIES1}
-                  renderItem={renderItemFunc}
-                  sliderWidth={sliderWidth}
-                  itemWidth={itemWidth}
-                  containerCustomStyle={styles.slider}
-                  contentContainerCustomStyle={styles.sliderContentContainer}
-                  scrollInterpolator={scrollInterpolators[`scrollInterpolator${refNumber}`]}
-                  slideInterpolatedStyle={animatedStyles[`animatedStyles${refNumber}`]}
-                  useScrollView={true}
-                />
-            </View>
-        ) : false;
-    }
-
-   
 
     render () {
-        const example1 = this.mainExample(1, 'Default layout | Loop | Autoplay | Parallax | Scale | Opacity | Pagination with tappable dots');
+        
         const example2 = this.momentumExample(2, 'Momentum | Left-aligned | Active animation');
-        const example3 = this.layoutExample(3, '"Stack of cards" layout | Loop', 'stack');
-        const example4 = this.layoutExample(4, '"Tinder-like" layout | Loop', 'tinder');
-        const example5 = this.customExample(5, 'Custom animation 1', 1, this._renderItem);
-        const example6 = this.customExample(6, 'Custom animation 2', 2, this._renderLightItem);
-        const example7 = this.customExample(7, 'Custom animation 3', 3, this._renderDarkItem);
-        const example8 = this.customExample(8, 'Custom animation 4', 4, this._renderLightItem);
+        
 
         return (
             <SafeAreaView style={styles.safeArea}>
@@ -276,7 +190,7 @@ export default class Index extends Component {
                       scrollEventThrottle={200}
                       directionalLockEnabled={true}
                     >
-                        { example1 }
+                      
                         { example2 }
                         
                     </ScrollView>

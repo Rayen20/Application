@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Teachr;
+use App\Entity\Statistics;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,17 +15,179 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
+
+// This is my teachr controller , I did an  api rest  with (GET, POST, PUT) , 
+//also as a bonus I made some simple interfaces in which you can insert, modify or view the data through the browser  
+//you will find an explanation in front of each function 
 class TeachrController extends AbstractController
 {  
-    /**
-     * @Route("/teachr", name="teachr")
+    
+
+// API (GET,PUT,POST)
+
+// api : POST 
+/**
+     * @Route("/api/post", name="post",methods={"POST"})
+     * 
+     *
      */
-    public function index(): Response
-    {
-        return $this->render('teachr/index.html.twig', [
-            'controller_name' => 'TeachrController',
-        ]);
+public function postAction(Request $request){
+   
+
+    // initialize the counter to 0 
+        $n = 0;
+        
+    // get all objects teachers  
+        $teachers = $this->getDoctrine()
+        ->getRepository(Teachr::class)
+        ->findAll();
+
+
+    // from  table statistic we fixed the object with id= 1 as an counter 
+    //and each time a teach object is inserted, the counter increments with 1 
+        
+        $entityManag = $this->getDoctrine()->getManager();
+        $stats = $entityManag->getRepository(Statistics::class)
+        ->find(1);
+
+
+        foreach ($teachers as $teach) {
+
+            $n ++ ;
+       
+        if ($stats) {
+        
+           // $n += $n + 1 ;
+        $stats->setCount($n +1);
+
+        $entityManag->flush(); 
+    
     }
+       
+       
+        }
+
+    
+        // new teachr
+        $teachr = new Teachr();
+
+       
+        // decoding data
+        $donnees = json_decode($request->getContent());
+     
+        // insertion
+        $teachr->setFirstname($donnees->firstname);
+        $teachr->setDate(new \DateTime('now'));
+        // persist into the database
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($teachr);
+        
+      
+        $entityManager->flush();
+
+     
+    return new Response();
+
+
+   
+    }
+
+
+// Api : PUT
+
+/**
+ * @Route("/api/put/{id}", name="put", methods={"PUT"})
+ */
+public function put(?Teachr $teachr,Request $request)
+{
+    
+
+
+     // decoding data
+    $donnees = json_decode($request->getContent());
+
+    // We initialize the response code 
+    $code = 200;
+
+// If the teachr is not found 
+   if(!$teachr){
+        // We instantiate a new  teachr object 
+        $teachr = new Teachr();
+        // We change the response code 
+        $code = 201;
+    }
+
+    // set
+    $teachr->setFirstname($donnees->firstname);
+    $teachr->setDate(new \DateTime('now'));
+
+    //  persist into the database
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->persist($teachr);
+    $entityManager->flush();
+
+    // We return the confirmation 
+  
+return new Response('status', $code);
+}
+
+ // function to serialize the object that will be used in the get API 
+
+private function serializeProgrammer(Teachr $teachr)
+{
+    return array(
+        'firstname' => $teachr->getFirstname(),
+        'date' => $teachr->getDate(),
+        
+    );
+}
+
+// API : GET
+
+ /**
+     * @Route("/api/get", name="get")
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getAction()
+    {
+        // find all teachers 
+        $teachers = $this->getDoctrine()
+            ->getRepository(Teachr::class)
+            ->findAll();
+
+            // data extractions 
+        $data = array();
+        foreach ($teachers as $teachr) {
+            $data[] = $this->serializeProgrammer($teachr);
+        }
+        
+        $response = new Response();
+
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        // decoding data
+
+        $response->setContent(json_encode($data));
+        
+        return $response;
+       
+    }
+    
+   
+    
+// Statistics
+
+
+
+
+
+
+
+// this part contains interfaces that will be displayed in the browser  (GET , PUT , POST)
+
+
+// this is a simple interface for adding new teachr object
 
     /**
  * @Route("/add", name="add")
@@ -33,6 +196,7 @@ public function add(Request $request): Response
 {
     $teachr = new Teachr();
     $form = $this->createForm(TeachrFormType::class, $teachr);
+    $teachr->setDate(new \DateTime('now'));
     $form->handleRequest($request);
 
     if($form->isSubmitted() && $form->isValid())
@@ -47,49 +211,8 @@ public function add(Request $request): Response
         "form_teachr" => $form->createView(),
     ]);
 }
-
-// methode post api symfony
-/**
-     * @Route("/api/post", name="post",methods={"POST"})
-     * 
-     *
-     */
-public function postAction(Request$request){
-    
-   // if($request->isXmlHttpRequest()) {
-        // On instancie un nouvel article
-        $article = new Teachr();
-
-        // On décode les données envoyées
-        $donnees = json_decode($request->getContent());
-
-        // On hydrate l'objet
-        $article->setFirstname($donnees->firstname);
-        $article->setDate(new \DateTime('now'));
-       
-        
-
-        // On sauvegarde en base
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($article);
-        $entityManager->flush();
-
-        // On retourne la confirmation
-     //   return new Response('ok', 201);
-   // }
-    return new Response();
-
-
-    /*$data=json_decode($request->getContent(),true);
-    $form->submit($data);
-    if($form->isSubmitted()&&$form->isValid())
-    {$em=$this->getDoctrine()->getManager()
-        ;$em->persist($teachr);
-        $em->flush();
-        return$this->handleView($this->view(['status'=>'ok'],Response::HTTP_CREATED));}*/
-       // return$this->handleView($this->view($form->getErrors()));
-    }
-    
+// A simple interface that display all objects on browser
+     
 /**
  * @Route("/teachers", name="teachers")
  */
@@ -102,51 +225,11 @@ public function teachers()
     ]);
 }
 
-
-// put symfony api rest
-
+// A simple interface in which  we can  update data
 /**
- * @Route("/api/update/{id}", name="update", methods={"PUT"})
+ * @Route("/update/{id}", name="update")
  */
-public function update(?Teachr $article,Request $request)
-{
-    
-   // On vérifie si la requête est une requête Ajax
-  
-
-    // On décode les données envoyées
-    $donnees = json_decode($request->getContent());
-
-    // On initialise le code de réponse
-    $code = 200;
-
-    // Si l'article n'est pas trouvé
-    if(!$article){
-        // On instancie un nouvel article
-        $article = new Teachr();
-        // On change le code de réponse
-        $code = 201;
-    }
-
-    // On hydrate l'objet
-    $article->setFirstname($donnees->firstname);
-     $article->setDate(new \DateTime('now'));
-
-    // On sauvegarde en base
-    $entityManager = $this->getDoctrine()->getManager();
-    $entityManager->persist($article);
-    $entityManager->flush();
-
-    // On retourne la confirmation
-  
-return new Response('status', $code);
-}
-
- 
-/**
- * @Route("/put/{id}", name="put")
- */
-public function put(Request $request, int $id): Response
+public function update(Request $request, int $id): Response
 {
     $entityManager = $this->getDoctrine()->getManager();
 
@@ -166,83 +249,5 @@ public function put(Request $request, int $id): Response
 
 
 }
-/**
-     * @Route("/api/users", name="users")
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getUsers()
-    {
-        $users = [
-            [
-                'title' => 'Beautiful and dramatic Antelope Canyon',
-                'subtitle'=> 'Lorem ipsum dolor sit amet et nuncat mergitur',
-                'illustration'=>'https://i.imgur.com/UYiroysl.jpg'
-            ],
-            [
-                'title' => 'Beautiful and dramatic Antelope Canyon',
-                'subtitle'=> 'Lorem ipsum dolor sit amet et nuncat mergitur',
-                'illustration'=>'https://i.imgur.com/UYiroysl.jpg'
-              ],
-            [
-                'title' => 'Beautiful and dramatic Antelope Canyon',
-                'subtitle'=> 'Lorem ipsum dolor sit amet et nuncat mergitur',
-                'illustration'=>'https://i.imgur.com/UYiroysl.jpg'
-             ]
-        ];
-    
-        $response = new Response();
-
-        $response->headers->set('Content-Type', 'application/json');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        $response->setContent(json_encode($users));
-        
-        return $response;
-    }
-private function serializeProgrammer(Teachr $teachr)
-{
-    return array(
-        'firstname' => $teachr->getFirstname(),
-        'date' => $teachr->getDate(),
-        
-    );
-}
-
- /**
-     * @Route("/api/public", name="public")
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function publicAction()
-    {
-        //$teachers = $this->getDoctrine()->getRepository(Teachr::class)->findAll();
-       // $response = new Response();
-
-        /*$response->headers->set('Content-Type', 'application/json');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        $response->setContent(json_encode($teachers));*/
-        
-        $teachers = $this->getDoctrine()
-            ->getRepository(Teachr::class)
-            ->findAll();
-        $data = array();
-        foreach ($teachers as $teachr) {
-            $data[] = $this->serializeProgrammer($teachr);
-        }
-        
-        $response = new Response();
-
-        $response->headers->set('Content-Type', 'application/json');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        $response->setContent(json_encode($data));
-        
-        return $response;
-       // return $response;
-        
-
-        //return new JsonResponse($teachers);
-    }
-
 
 }
