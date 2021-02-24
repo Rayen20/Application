@@ -8,6 +8,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\TeachrFormType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class TeachrController extends AbstractController
 {  
@@ -42,6 +47,49 @@ public function add(Request $request): Response
         "form_teachr" => $form->createView(),
     ]);
 }
+
+
+/**
+     * @Route("/api/post", name="post",methods={"POST"})
+     * 
+     *
+     */
+public function postAction(Request$request){
+    
+   // if($request->isXmlHttpRequest()) {
+        // On instancie un nouvel article
+        $article = new Teachr();
+
+        // On décode les données envoyées
+        $donnees = json_decode($request->getContent());
+
+        // On hydrate l'objet
+        $article->setFirstname($donnees->firstname);
+        $article->setDate(new \DateTime('now'));
+       
+        
+
+        // On sauvegarde en base
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($article);
+        $entityManager->flush();
+
+        // On retourne la confirmation
+     //   return new Response('ok', 201);
+   // }
+    return new Response();
+
+
+    /*$data=json_decode($request->getContent(),true);
+    $form->submit($data);
+    if($form->isSubmitted()&&$form->isValid())
+    {$em=$this->getDoctrine()->getManager()
+        ;$em->persist($teachr);
+        $em->flush();
+        return$this->handleView($this->view(['status'=>'ok'],Response::HTTP_CREATED));}*/
+       // return$this->handleView($this->view($form->getErrors()));
+    }
+    
 /**
  * @Route("/teachers", name="teachers")
  */
